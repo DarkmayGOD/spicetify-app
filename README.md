@@ -6,4 +6,4 @@ App for Spicetify
 
 ### This app is not from Spicetify, it's from me!
 
-# If you want to use fully the App, give install.bat and install.ps1 to same folder!
+**If you want to use fully the App, give install.bat and install.ps1 to the same folder!**
