@@ -120,7 +120,7 @@ class functions:
             print(f"{tag_spicetify} {Fore.WHITE}Do you really want to {Fore.RED}restore backups from {Fore.LIGHTRED_EX}Spicetify? {Fore.WHITE}This will remove your backups!{Fore.BLUE}(Y/N)")
             restore2 = input(f"{tag_user} ")
             if restore2 == 'y' or restore2 == 'Y':
-                print(f"{Fore.LIGHTRED_EX}Okay.. Uninstalling the Spicetify.. Goodbye :(")
+                print(f"{Fore.LIGHTRED_EX}Restoring the spicetify backups...")
                 time.sleep(1.5)
                 subprocess.call(f'{powershell} spicetify restore', shell=True)
                 time.sleep(2)
