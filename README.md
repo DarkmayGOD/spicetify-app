@@ -12,6 +12,5 @@ App for Spicetify
 
 It works simply on the Powershell. Program is executing Powershell scripts, so it will save your time!
 
-
-![image](https://user-images.githubusercontent.com/63445825/201190475-6d758afb-6df7-408e-9777-9593480f3e3e.png)
+![image](https://user-images.githubusercontent.com/63445825/203255869-d5f5f054-d896-43fd-8770-b0ac72157113.png)
 
