@@ -82,8 +82,12 @@ class titles:
    {tag_spicetify}{Fore.LIGHTYELLOW_EX} 5. Restore (5)
    {tag_spicetify}{Fore.LIGHTYELLOW_EX} 6. Backup (6)
    {tag_spicetify}{Fore.LIGHTYELLOW_EX} 7. Config menu (7)
+<<<<<<< HEAD
    {tag_spicetify}{Fore.LIGHTYELLOW_EX} 8. Upgrade (8)
    {tag_spicetify}{Fore.LIGHTRED_EX} 9. Close App (9)
+=======
+   {tag_spicetify}{Fore.LIGHTRED_EX} 8. Close App (8)
+>>>>>>> 1dc85204a6644db31a91d697fed2dcce26cf9df6
         
 """)
 
@@ -114,11 +118,17 @@ class options:
             functions.backup(self='self') # Backup Function
         elif main_choice == '7': # Config menu
             functions.config_menu(self='self')
+<<<<<<< HEAD
         elif main_choice == '8': # Upgrade
             functions.upgrade(self='self')
         elif main_choice == '9': # End Function
             options.end(self='self')
         elif main_choice != '1' and main_choice != '2' and main_choice != '3' and main_choice != '4' and main_choice != '5' and main_choice != '6' and main_choice != '7' and main_choice != '8' and main_choice != '9':
+=======
+        elif main_choice == '8': # End Function
+            options.end(self='self')
+        elif main_choice != '1' and main_choice != '2' and main_choice != '3' and main_choice != '4' and main_choice != '5' and main_choice != '6' and main_choice != '7' and main_choice != '8':
+>>>>>>> 1dc85204a6644db31a91d697fed2dcce26cf9df6
             options.mainmenu(self='self')
     def end(self):
         titles.spicetify(self='self')
@@ -133,6 +143,7 @@ class options:
         elif end_sure != 'Y' or 'y':
             options.mainmenu(self='self')
 class functions:
+<<<<<<< HEAD
     def upgrade(self):
         print(f'{tag_spicetify} {Fore.WHITE}Do you really want to upgrade Spicetify? (Y/N)')
         upgrade_sure = input(tag_user)
@@ -143,6 +154,8 @@ class functions:
             options.mainmenu(self='self')
         else:
             options.mainmenu(self='self')
+=======
+>>>>>>> 1dc85204a6644db31a91d697fed2dcce26cf9df6
     def config_menu(self):
         titles.configmenu_title(self='self')
         configmenu_sure = input(tag_user)
