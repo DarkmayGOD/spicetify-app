@@ -37,6 +37,19 @@ class titles:
 
 {Style.RESET_ALL}
 """)
+    def configmenu_title(self):
+        titles.spicetify(self='self')
+        print(f'''
+        
+        {tag_spicetify} {Fore.LIGHTYELLOW_EX}1. Change Color scheme (1)
+        {tag_spicetify} {Fore.LIGHTYELLOW_EX}2. Overwrite assets (2)
+        {tag_spicetify} {Fore.LIGHTYELLOW_EX}3. Current theme (3)
+        {tag_spicetify} {Fore.LIGHTYELLOW_EX}4. Inject css (4)
+        {tag_spicetify} {Fore.LIGHTYELLOW_EX}5. Replace colors (5)
+        {tag_spicetify} {Fore.LIGHTYELLOW_EX}6. Config Directory (6)
+        {tag_spicetify} {Fore.LIGHTRED_EX}7. Go to Main menu (7)
+        
+        ''')
     def spaces(self):
         print("""
         
@@ -52,25 +65,43 @@ class titles:
         - exit / EXIT
         
         """)
+    def install_title(self):
+        print(f'''
+        {tag_spicetify}{Fore.LIGHTYELLOW_EX} 1. Install Spicetify (1)
+        {tag_spicetify}{Fore.LIGHTYELLOW_EX} 2. Install Marketplace (2)
+        {tag_spicetify}{Fore.LIGHTRED_EX} 3. Go to main menu (3)
+        
+        ''')
     def backmenu(self):
         titles.spicetify(self='self')
         print(f"""
-   {tag_spicetify}{Fore.LIGHTYELLOW_EX} 1. Install (1)
+   {tag_spicetify}{Fore.LIGHTYELLOW_EX} 1. Install menu (1)
    {tag_spicetify}{Fore.LIGHTYELLOW_EX} 2. Apply (2)
    {tag_spicetify}{Fore.LIGHTYELLOW_EX} 3. Help (3)
-   {tag_spicetify}{Fore.LIGHTYELLOW_EX} 4. Powershell Tool (4)
+   {tag_spicetify}{Fore.LIGHTYELLOW_EX} 4. Powershell Terminal (4)
    {tag_spicetify}{Fore.LIGHTYELLOW_EX} 5. Restore (5)
    {tag_spicetify}{Fore.LIGHTYELLOW_EX} 6. Backup (6)
-   {tag_spicetify}{Fore.LIGHTRED_EX} 5. Close App (7)
+   {tag_spicetify}{Fore.LIGHTYELLOW_EX} 7. Config menu (7)
+   {tag_spicetify}{Fore.LIGHTYELLOW_EX} 8. Upgrade (8)
+   {tag_spicetify}{Fore.LIGHTRED_EX} 9. Close App (9)
         
 """)
 
 class options:
+    def install_opt(self):
+        titles.install_title(self='self')
+        installmenuchoice = input(tag_user)
+        if installmenuchoice == '2':
+            functions.market_placeinstall(self='self')
+        if installmenuchoice == '1':
+            functions.install(self='self')
+        if installmenuchoice != '1' and installmenuchoice != '2':
+            options.mainmenu(self='self')
     def mainmenu(self):
         titles.backmenu(self='self')
         main_choice = input(tag_user)
         if main_choice == '1':
-            functions.install(self='self') # install function
+            options.install_opt(self='self') # install function
         elif main_choice == '2':
             functions.apply(self='self') # Apply Function
         elif main_choice == '3':
@@ -81,9 +112,13 @@ class options:
             functions.restore(self='self') # Restore Function
         elif main_choice == '6':
             functions.backup(self='self') # Backup Function
-        elif main_choice == '7': # End Function
+        elif main_choice == '7': # Config menu
+            functions.config_menu(self='self')
+        elif main_choice == '8': # Upgrade
+            functions.upgrade(self='self')
+        elif main_choice == '9': # End Function
             options.end(self='self')
-        elif main_choice != '1' and main_choice != '2' and main_choice != '3' and main_choice != '4' and main_choice != '5' and main_choice != '6' and main_choice != '7':
+        elif main_choice != '1' and main_choice != '2' and main_choice != '3' and main_choice != '4' and main_choice != '5' and main_choice != '6' and main_choice != '7' and main_choice != '8' and main_choice != '9':
             options.mainmenu(self='self')
     def end(self):
         titles.spicetify(self='self')
@@ -98,20 +133,195 @@ class options:
         elif end_sure != 'Y' or 'y':
             options.mainmenu(self='self')
 class functions:
+    def upgrade(self):
+        print(f'{tag_spicetify} {Fore.WHITE}Do you really want to upgrade Spicetify? (Y/N)')
+        upgrade_sure = input(tag_user)
+        if upgrade_sure == 'Y' or upgrade_sure == 'y':
+            subprocess.call(f'{powershell} spicetify upgrade', shell=True)
+            print(f'{tag_spicetify} {Fore.LIGHTGREEN_EX}Done!')
+            time.sleep(1)
+            options.mainmenu(self='self')
+        else:
+            options.mainmenu(self='self')
+    def config_menu(self):
+        titles.configmenu_title(self='self')
+        configmenu_sure = input(tag_user)
+        with open('requirements/installed.txt', 'r') as installed1:
+            installed3 = installed1.read()
+            if installed3 == 'true':
+                if configmenu_sure == '1': ## Color scheme
+                    print(tag_spicetify,f'{Fore.WHITE}Name of the Color scheme?')
+                    nameofthescheme = input(tag_user)
+                    time.sleep(1)
+                    print(tag_spicetify, 'Name of the scheme is', '"'+nameofthescheme+'"', 'Is this right? (Y/N)')
+                    nmschm_sure = input(tag_user)
+                    if nmschm_sure == 'y' or nmschm_sure == 'Y':
+                        print(tag_spicetify, f'{Fore.WHITE} Rewriting...')
+                        time.sleep(0.5)
+                        subprocess.call(f'{powershell} spicetify config color_scheme {nameofthescheme}', shell=True)
+                        for i in range(3):
+                            titles.spaces(self='self')
+                        subprocess.call(f'{powershell} spicetify apply', shell=True)
+                        print(tag_spicetify, f'{Fore.LIGHTGREEN_EX} Done!')
+                        print(tag_spicetify, f'{Fore.WHITE}Going back to main menu..')
+                        options.mainmenu(self='self')
+                    else:
+                        functions.config_menu(self='self')
+                elif configmenu_sure == '2': ## Overwrite access
+                    print(tag_spicetify, f'{Fore.WHITE}Do you want to enable(Y) or disable overwrite access (N)? (Y/N)')
+                    overwriteassets = input(tag_user)
+                    if overwriteassets == 'y' or overwriteassets == 'Y':
+                        print(tag_spicetify, f'{Fore.WHITE}You want to enable Overwrite assets, is this right? (Y/N)')
+                        overwriteassets_sure = input(tag_user)
+                        if overwriteassets_sure == 'Y' or overwriteassets_sure == 'y':
+                            print('Rewriting overwrite to 1...')
+                            time.sleep(0.5)
+                            subprocess.call(f'{powershell} spicetify config overwrite_assets 1', shell=True)
+                            subprocess.call(f'{powershell} spicetify apply', shell=True)
+                            print(tag_spicetify, f'{Fore.LIGHTGREEN_EX}Done!')
+                            print(tag_spicetify, f'{Fore.LIGHTGREEN_EX}Spicetify were reloaded!')
+                            options.mainmenu(self='self')
+                        else:
+                            functions.config_menu(self='self')
+                    if overwriteassets == 'n' or overwriteassets == 'N':
+                        print(tag_spicetify, f'{Fore.WHITE}You want to disable Overwrite assets, is this right? (Y/N)')
+                        overwriteassets_sure = input(tag_user)
+                        if overwriteassets_sure == 'Y' or overwriteassets_sure == 'y':
+                            print('Rewriting overwrite to 0...')
+                            time.sleep(0.5)
+                            subprocess.call(f'{powershell} spicetify config overwrite_assets 0', shell=True)
+                            subprocess.call(f'{powershell} spicetify apply', shell=True)
+                            print(tag_spicetify, f'{Fore.LIGHTGREEN_EX}Done!')
+                            print(tag_spicetify, f'{Fore.LIGHTGREEN_EX}Spicetify were reloaded!')
+                            options.mainmenu(self='self')
+                        else:
+                            functions.config_menu(self='self')
+                elif configmenu_sure == '3': ## Theme
+                    print(tag_spicetify,f'{Fore.WHITE}Name of the "Current theme"?')
+                    nameofthescheme = input(tag_user)
+                    time.sleep(1)
+                    print(tag_spicetify, 'Name of the Current theme is', '"'+nameofthescheme+'"', 'Is this right? (Y/N)')
+                    nmschm_sure = input(tag_user)
+                    if nmschm_sure == 'y' or nmschm_sure == 'Y':
+                        print(tag_spicetify, f'{Fore.WHITE} Rewriting...')
+                        time.sleep(0.5)
+                        subprocess.call(f'{powershell} spicetify config current_theme {nameofthescheme}', shell=True)
+                        for i in range(3):
+                            titles.spaces(self='self')
+                        subprocess.call(f'{powershell} spicetify apply', shell=True)
+                        print(tag_spicetify, f'{Fore.LIGHTGREEN_EX} Done!')
+                        print(tag_spicetify, f'{Fore.WHITE}Going back to main menu..')
+                        options.mainmenu(self='self')
+                    else:
+                        functions.config_menu(self='self')
+                elif configmenu_sure == '4': ## Inject CSS
+                    print(tag_spicetify, f'{Fore.WHITE}Do you want to enable(Y) or disable Inject css (N)? (Y/N)')
+                    overwriteassets = input(tag_user)
+                    if overwriteassets == 'y' or overwriteassets == 'Y':
+                        print(tag_spicetify, f'{Fore.WHITE}You want to enable Inject css, is this right? (Y/N)')
+                        overwriteassets_sure = input(tag_user)
+                        if overwriteassets_sure == 'Y' or overwriteassets_sure == 'y':
+                            print('Rewriting inject_css to 1...')
+                            time.sleep(0.5)
+                            subprocess.call(f'{powershell} spicetify config inject_css 1', shell=True)
+                            subprocess.call(f'{powershell} spicetify apply', shell=True)
+                            print(tag_spicetify, f'{Fore.LIGHTGREEN_EX}Done!')
+                            print(tag_spicetify, f'{Fore.LIGHTGREEN_EX}Spicetify were reloaded!')
+                            options.mainmenu(self='self')
+                        else:
+                            functions.config_menu(self='self')
+                    elif overwriteassets == 'n' or overwriteassets == 'N':
+                        print(tag_spicetify, f'{Fore.WHITE}You want to disable Inject css, is this right? (Y/N)')
+                        overwriteassets_sure = input(tag_user)
+                        if overwriteassets_sure == 'Y' or overwriteassets_sure == 'y':
+                            print('Rewriting inject_css to 0...')
+                            time.sleep(0.5)
+                            subprocess.call(f'{powershell} spicetify config inject_css 0', shell=True)
+                            subprocess.call(f'{powershell} spicetify apply', shell=True)
+                            print(tag_spicetify, f'{Fore.LIGHTGREEN_EX}Done!')
+                            print(tag_spicetify, f'{Fore.LIGHTGREEN_EX}Spicetify were reloaded!')
+                            options.mainmenu(self='self')
+                        else:
+                            functions.config_menu(self='self')
+                elif configmenu_sure == '5': ## Replace colors
+                    print(tag_spicetify, f'{Fore.WHITE}Do you want to enable(Y) or disable Replace colors(N)? (Y/N)')
+                    overwriteassets = input(tag_user)
+                    if overwriteassets == 'y' or overwriteassets == 'Y':
+                        print(tag_spicetify, f'{Fore.WHITE}You want to enable Replace colors, is this right? (Y/N)')
+                        overwriteassets_sure = input(tag_user)
+                        if overwriteassets_sure == 'Y' or overwriteassets_sure == 'y':
+                            print('Rewriting replace_colors to 1...')
+                            time.sleep(0.5)
+                            subprocess.call(f'{powershell} spicetify config replace_colors 1', shell=True)
+                            subprocess.call(f'{powershell} spicetify apply', shell=True)
+                            print(tag_spicetify, f'{Fore.LIGHTGREEN_EX}Done!')
+                            print(tag_spicetify, f'{Fore.LIGHTGREEN_EX}Spicetify were reloaded!')
+                            options.mainmenu(self='self')
+                        else:
+                            functions.config_menu(self='self')
+                    elif overwriteassets == 'n' or overwriteassets == 'N':
+                        print(tag_spicetify, f'{Fore.WHITE}You want to disable Replace colors assets, is this right? (Y/N)')
+                        overwriteassets_sure = input(tag_user)
+                        if overwriteassets_sure == 'Y' or overwriteassets_sure == 'y':
+                            print('Rewriting replace_colors to 0...')
+                            time.sleep(0.5)
+                            subprocess.call(f'{powershell} spicetify config replace_colors 0', shell=True)
+                            subprocess.call(f'{powershell} spicetify apply', shell=True)
+                            print(tag_spicetify, f'{Fore.LIGHTGREEN_EX}Done!')
+                            print(tag_spicetify, f'{Fore.LIGHTGREEN_EX}Spicetify were reloaded!')
+                            options.mainmenu(self='self')
+                        else:
+                            functions.config_menu(self='self')
+                elif configmenu_sure == '6':
+                    print(tag_spicetify, 'Config menu directory: ')
+                    subprocess.call(f'{powershell} spicetify --config', shell=True)
+                    input(f'{tag_spicetify} Press any button to go to menu.')
+                    options.mainmenu(self='self')
+
+                #### END OF CONFIG MENU STORY HERE
+                if configmenu_sure != '1' and configmenu_sure != '2' and configmenu_sure != '3' and configmenu_sure != '4' and configmenu_sure != '5' and configmenu_sure != '6':
+                    options.mainmenu(self='self')
+                installed1.close()
+            else:
+                print(f'{Fore.RED}You dont have installed Spicetify!')
+                options.mainmenu(self='self')
+
     def install(self):
         titles.spicetify(self='self')
         print(f"{tag_spicetify} {Fore.WHITE}Do you really want to install {Fore.LIGHTRED_EX}Spicetify? {Fore.BLUE}(Y/N)")
         spicetify_install = input(tag_user)
         if spicetify_install == 'y' or spicetify_install == 'Y':
             time.sleep(1)
-            print(f'{tag_spicetify} Sending the command to Powershell..)')
+            print(f'{tag_spicetify} Sending the command to Powershell..')
             time.sleep(0.5)
-            subprocess.run(f'start install.bat', stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
-            print('Done!')
+            subprocess.run(f'requirements/install.bat', stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
+            print(f'{tag_spicetify}{Fore.LIGHTGREEN_EX} Done!')
+            subprocess.call(f'{powershell} spicetify apply', stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
+            with open('requirements/installed.txt', 'w') as f:
+                f.write('true')
             options.mainmenu(self='self')
         else:
             print(tag_spicetify, 'Giving you back to the menu...')
             options.mainmenu(self='self')
+    def market_placeinstall(self):
+        titles.spicetify(self='self')
+        with open('requirements/installed.txt', 'r') as f:
+            f_installed = f.read()
+        if f_installed == 'true':
+            print(f'{tag_spicetify} {Fore.WHITE}Do you really want to install {Fore.LIGHTRED_EX}Spicetify marketplace? {Fore.BLUE}(Y/N)')
+            marketplace_sure = input(tag_user)
+            if marketplace_sure == 'Y' or marketplace_sure == 'y':
+                time.sleep(0.5)
+                print(f'{tag_spicetify} Sending the command to Powershell...')
+                time.sleep(0.5)
+                subprocess.run('requirements/spicetify_market.bat', stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
+                subprocess.call(f'{powershell} spicetify apply', stdout=subprocess.PIPE, stderr=subprocess.STDOUT,shell=True)
+                print(f'{Fore.LIGHTGREEN_EX}Done!')
+                options.mainmenu(self='self')
+            else:
+                options.mainmenu(self='self')
+        else:
+            print(tag_spicetify, f'{Fore.RED}You need to install Spicetify first!')
     def restore(self):
         titles.spicetify(self='self')
         print(f"{tag_spicetify} {Fore.WHITE}Do you really want to {Fore.RED}restore backups from {Fore.LIGHTRED_EX}Spicetify? {Fore.BLUE}(Y/N)")
@@ -142,6 +352,55 @@ class functions:
             options.mainmenu(self='self')
         else:
             options.mainmenu(self='self')
+    def createfile(self):
+        cwd = os.getcwd()
+        folder = cwd+r'/requirements/'
+        path = cwd+r'/requirements/installed.txt'
+        marketbat = cwd+r'/requirements/spicetify_market.bat'
+        marketps = cwd+r'/requirements/spicetify_market.ps1'
+        installbat = cwd+r'/requirements/install.bat'
+        installps = cwd+r'/requirements/install.ps1'
+        ## FOLDER CREATE
+        if os.path.exists(folder):
+            pass
+        else:
+            os.mkdir(cwd+'/requirements')
+        ## INSTALLED.TXT
+        if os.path.exists(path):
+            pass
+        else:
+            with open(path, 'w+') as f:
+                f.write('false')
+                f.close()
+        ## SPICETIFY MARKET ##
+        # MARKET.BAT
+        if os.path.exists(marketbat):
+            pass
+        else:
+            with open(marketbat, 'w+') as p:
+                p.write('''powershell.exe -executionpolicy remotesigned -File  "spicetify_market.ps1"
+taskkill /F /IM cmd.exe''')
+                p.close()
+        # MARKET.ps1
+        if os.path.exists(marketps):
+            pass
+        else:
+            with open(marketps, 'w+') as r:
+                r.write('iwr -useb https://raw.githubusercontent.com/spicetify/spicetify-marketplace/main/resources/install.ps1 | iex')
+                r.close()
+        # INSTALL.BAT
+        if os.path.exists(installbat):
+            pass
+        else:
+            with open(installbat, 'w+') as g:
+                g.write('''powershell.exe -executionpolicy remotesigned -File  "install.ps1"
+taskkill /F /IM cmd.exe''')
+        # INSTALL.PS1
+        if os.path.exists(installps):
+            pass
+        else:
+            with open(installps, 'w+') as l:
+                l.write('iwr -useb https://raw.githubusercontent.com/spicetify/spicetify-cli/master/install.ps1 | iex')
     def apply(self):
         titles.spicetify(self='self')
         print(f"{tag_spicetify} {Fore.WHITE}Do you really want to apply changes? {Fore.BLUE}(Y/N)")
@@ -179,5 +438,6 @@ class functions:
         else:
             options.mainmenu(self='self')
 ##APP
-
-options.mainmenu(self='self')
+if __name__ == '__main__':
+    functions.createfile(self='self')
+    options.mainmenu(self='self')
